@@ -1,0 +1,22 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="TestSuite">
+    <test name="Autocomplete Test">
+        <classes>
+            <class name="features.AutocompleteTest" />
+        </classes>
+    </test>
+
+    <test name="Registration Test">
+        <classes>
+            <class name="features.RegistrationTest" />
+        </classes>
+    </test>
+
+    <test name="Search Test">
+        <classes>
+            <class name="features.SearchTest" />
+        </classes>
+    </test>
+</suite>

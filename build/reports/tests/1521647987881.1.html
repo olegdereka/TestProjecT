@@ -1,0 +1,969 @@
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml"><head><style type="text/css">/*!
+ * https://github.com/YouCanBookMe/react-datetime
+ */
+
+.rdt {
+  position: relative;
+}
+.rdtPicker {
+  display: none;
+  position: absolute;
+  width: 250px;
+  padding: 4px;
+  margin-top: 1px;
+  z-index: 99999 !important;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,.1);
+  border: 1px solid #f9f9f9;
+}
+.rdtOpen .rdtPicker {
+  display: block;
+}
+.rdtStatic .rdtPicker {
+  box-shadow: none;
+  position: static;
+}
+
+.rdtPicker .rdtTimeToggle {
+  text-align: center;
+}
+
+.rdtPicker table {
+  width: 100%;
+  margin: 0;
+}
+.rdtPicker td,
+.rdtPicker th {
+  text-align: center;
+  height: 28px;
+}
+.rdtPicker td {
+  cursor: pointer;
+}
+.rdtPicker td.rdtDay:hover,
+.rdtPicker td.rdtHour:hover,
+.rdtPicker td.rdtMinute:hover,
+.rdtPicker td.rdtSecond:hover,
+.rdtPicker .rdtTimeToggle:hover {
+  background: #eeeeee;
+  cursor: pointer;
+}
+.rdtPicker td.rdtOld,
+.rdtPicker td.rdtNew {
+  color: #999999;
+}
+.rdtPicker td.rdtToday {
+  position: relative;
+}
+.rdtPicker td.rdtToday:before {
+  content: '';
+  display: inline-block;
+  border-left: 7px solid transparent;
+  border-bottom: 7px solid #428bca;
+  border-top-color: rgba(0, 0, 0, 0.2);
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+}
+.rdtPicker td.rdtActive,
+.rdtPicker td.rdtActive:hover {
+  background-color: #428bca;
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+.rdtPicker td.rdtActive.rdtToday:before {
+  border-bottom-color: #fff;
+}
+.rdtPicker td.rdtDisabled,
+.rdtPicker td.rdtDisabled:hover {
+  background: none;
+  color: #999999;
+  cursor: not-allowed;
+}
+
+.rdtPicker td span.rdtOld {
+  color: #999999;
+}
+.rdtPicker td span.rdtDisabled,
+.rdtPicker td span.rdtDisabled:hover {
+  background: none;
+  color: #999999;
+  cursor: not-allowed;
+}
+.rdtPicker th {
+  border-bottom: 1px solid #f9f9f9;
+}
+.rdtPicker .dow {
+  width: 14.2857%;
+  border-bottom: none;
+}
+.rdtPicker th.rdtSwitch {
+  width: 100px;
+}
+.rdtPicker th.rdtNext,
+.rdtPicker th.rdtPrev {
+  font-size: 21px;
+  vertical-align: top;
+}
+
+.rdtPrev span,
+.rdtNext span {
+  display: block;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;
+}
+
+.rdtPicker th.rdtDisabled,
+.rdtPicker th.rdtDisabled:hover {
+  background: none;
+  color: #999999;
+  cursor: not-allowed;
+}
+.rdtPicker thead tr:first-child th {
+  cursor: pointer;
+}
+.rdtPicker thead tr:first-child th:hover {
+  background: #eeeeee;
+}
+
+.rdtPicker tfoot {
+  border-top: 1px solid #f9f9f9;
+}
+
+.rdtPicker button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+.rdtPicker button:hover {
+  background-color: #eee;
+}
+
+.rdtPicker thead button {
+  width: 100%;
+  height: 100%;
+}
+
+td.rdtMonth,
+td.rdtYear {
+  height: 50px;
+  width: 25%;
+  cursor: pointer;
+}
+td.rdtMonth:hover,
+td.rdtYear:hover {
+  background: #eee;
+}
+
+.rdtCounters {
+  display: inline-block;
+}
+
+.rdtCounters &gt; div {
+  float: left;
+}
+
+.rdtCounter {
+  height: 100px;
+}
+
+.rdtCounter {
+  width: 40px;
+}
+
+.rdtCounterSeparator {
+  line-height: 100px;
+}
+
+.rdtCounter .rdtBtn {
+  height: 40%;
+  line-height: 40px;
+  cursor: pointer;
+  display: block;
+
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;
+}
+.rdtCounter .rdtBtn:hover {
+  background: #eee;
+}
+.rdtCounter .rdtCount {
+  height: 20%;
+  font-size: 1.2em;
+}
+
+.rdtMilli {
+  vertical-align: middle;
+  padding-left: 8px;
+  width: 48px;
+}
+
+.rdtMilli input {
+  width: 100%;
+  font-size: 1.2em;
+  margin-top: 37px;
+}
+</style><style type="text/css">@-webkit-keyframes __cr_18cBM{0%{-webkit-transform:translateX(22em);transform:translateX(22em);box-shadow:none}40%{box-shadow:none}70%{-webkit-transform:translateX(0);transform:translateX(0)}to{-webkit-transform:translateX(0);transform:translateX(0);box-shadow:0 8px 16px -10px #000}}@keyframes __cr_18cBM{0%{-webkit-transform:translateX(22em);transform:translateX(22em);box-shadow:none}40%{box-shadow:none}70%{-webkit-transform:translateX(0);transform:translateX(0)}to{-webkit-transform:translateX(0);transform:translateX(0);box-shadow:0 8px 16px -10px #000}}@-webkit-keyframes __cr_3hwEm{0%{-webkit-transform:translateX(-22em);transform:translateX(-22em);box-shadow:none}40%{box-shadow:none}70%{-webkit-transform:translateX(0);transform:translateX(0)}to{-webkit-transform:translateX(0);transform:translateX(0);box-shadow:0 8px 16px -10px #000}}@keyframes __cr_3hwEm{0%{-webkit-transform:translateX(-22em);transform:translateX(-22em);box-shadow:none}40%{box-shadow:none}70%{-webkit-transform:translateX(0);transform:translateX(0)}to{-webkit-transform:translateX(0);transform:translateX(0);box-shadow:0 8px 16px -10px #000}}.__cr_3k67u{-webkit-animation:__cr_18cBM 1s;animation:__cr_18cBM 1s}.__cr_yogyb{all:initial;*{all:inherit};font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;font-size:inherit}.__cr_10em_{position:fixed;bottom:2em;right:2em;left:auto;z-index:12312412;max-width:19em}@media screen and (max-width:320px){.__cr_10em_{right:.5em;left:auto}}@media screen and (min-width:321px) and (max-width:500px){.__cr_10em_{right:1em;left:auto}}.__cr_9G-no{width:100%}.__cr_10em_ .__cr_9G-no:before{content:"";display:block;width:1000em;height:0}.__cr_yogyb *{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif;margin:0;box-sizing:border-box}.__cr_yogyb .__cr_-8Kmf{position:relative}.__cr_yogyb .__cr_-8Kmf.__cr_oYYa0{border:1px solid #d3d3d3;border-radius:.2em;background-color:#fff}.__cr_yogyb .__cr_3qNTo.__cr_-8Kmf.__cr_oYYa0{box-shadow:0 8px 16px -10px #000}.__cr_yogyb .__cr_-8Kmf .__cr_1mxZ8{color:#000}.__cr_yogyb button{cursor:pointer}.__cr_yogyb button:active,.__cr_yogyb button:focus{box-shadow:0 0 8px rgba(0,149,255,.5)}.__cr_3DMqe{width:1.7em;padding:.5em .5em .2em .2em;position:absolute;top:0;right:0;cursor:pointer}.__cr_2Yn9D{color:#000}@-webkit-keyframes __cr_2lkDm{0%{height:0}to{height:2em}}@keyframes __cr_2lkDm{0%{height:0}to{height:2em}}.__cr_1FLgE{display:flex;justify-content:space-between;margin-left:-.1em;margin-right:-.1em;overflow-y:hidden}.__cr_1FLgE.__cr_1KQEN{height:0}.__cr_1FLgE.__cr_UxEcV{height:2em}.__cr_1FLgE.__cr_UxEcV.__cr_3WPlN{-webkit-animation:__cr_2lkDm .6s;animation:__cr_2lkDm .6s}.__cr_yogyb button:focus{border-color:#0095ff;outline:0}.__cr_yogyb button{color:#0095ff;border:1px solid #0095ff;border-radius:.2em;padding:.2em .1em;background-color:#fff;flex-grow:1;flex-basis:0;margin-top:.2em;margin-left:.1em;margin-right:.1em}.__cr_yogyb button:not(.__cr_3WPlN):disabled{color:#d3d3d3;border-color:#d3d3d3;background-color:#fff}.__cr_yogyb .__cr_2Mvnk{margin:.5em -.1em 0;display:flex;flex-flow:row wrap;justify-content:space-between}.__cr_2Mvnk.__cr_3m5k6{flex-direction:column}.__cr_2Mvnk.__cr_3m5k6 button{flex-basis:auto}.__cr_yogyb .__cr_2Mvnk button{position:relative}.__cr_yogyb button.__cr_qSrUJ{background-color:#0095ff;color:#fff;border-color:#0095ff}.__cr_yogyb button.__cr_qSrUJ:active,.__cr_yogyb button.__cr_qSrUJ:focus{box-shadow:0 0 5px rgba(0,149,255,.5)}.__cr_yogyb button.__cr_3bEBq{background-color:initial;color:green;border-color:green}.__cr_yogyb button.__cr_3bEBq:active,.__cr_yogyb button.__cr_3bEBq:focus{box-shadow:0 0 5px rgba(0,128,0,.5)}.__cr_yogyb button.__cr_60_c9{background-color:initial;color:maroon;border-color:maroon}.__cr_yogyb button.__cr_60_c9:active,.__cr_yogyb button.__cr_60_c9:focus{box-shadow:0 0 5px rgba(128,0,0,.5)}.__cr_yogyb .__cr_ajcvc{margin:.1em auto 0;display:flex;flex-flow:row wrap;justify-content:space-between;color:gray}.__cr_yogyb .__cr_ajcvc .__cr_3yj7f,.__cr_yogyb .__cr_ajcvc .__cr_49owJ{display:inline-block;font-size:.9em;max-width:45%;overflow-wrap:break-word}.__cr_yogyb .__cr_ajcvc .__cr_49owJ{text-align:left}.__cr_yogyb .__cr_ajcvc .__cr_3yj7f{text-align:right}.__cr_yogyb .__cr_2Mvnk button i{position:absolute;left:0;right:0;opacity:0;font-style:normal;z-index:2;-webkit-transform:none;transform:none}button.__cr_4TrPl i:before{content:"\2713"}@-webkit-keyframes __cr_1zMlC{0%{-webkit-transform:scale(0);transform:scale(0);opacity:0}40%{-webkit-transform:scale(1.1);transform:scale(1.1);opacity:1}60%{-webkit-transform:scale(1);transform:scale(1)}to{-webkit-transform:scale(1);transform:scale(1)}}@keyframes __cr_1zMlC{0%{-webkit-transform:scale(0);transform:scale(0);opacity:0}40%{-webkit-transform:scale(1.1);transform:scale(1.1);opacity:1}60%{-webkit-transform:scale(1);transform:scale(1)}to{-webkit-transform:scale(1);transform:scale(1)}}button.__cr_3WPlN span{color:transparent;outline:none}button.__cr_4TrPl.__cr_3WPlN i{-webkit-animation:__cr_1zMlC .7s ease-in-out;animation:__cr_1zMlC .7s ease-in-out;opacity:1}@-webkit-keyframes __cr_3K4Tt{0%{opacity:0}20%{opacity:0}40%{opacity:1}80%{opacity:1}to{opacity:0}}@keyframes __cr_3K4Tt{0%{opacity:0}20%{opacity:0}40%{opacity:1}80%{opacity:1}to{opacity:0}}button.__cr_18oYn i{top:0;bottom:0;left:0;right:0;-webkit-transform:rotate(0deg) scale(.3);transform:rotate(0deg) scale(.3)}button.__cr_18oYn i:before{content:"\2665"}button.__cr_18oYn.__cr_3WPlN i{-webkit-transition:all .8s;transition:all .8s;-webkit-animation:__cr_3K4Tt .8s ease-in-out;animation:__cr_3K4Tt .8s ease-in-out}button.__cr_18oYn.__cr_3WPlN i:last-child{-webkit-transition:none;transition:none;-webkit-animation:__cr_1zMlC .7s ease-in-out;animation:__cr_1zMlC .7s ease-in-out;opacity:1}button.__cr_18oYn.__cr_3WPlN i:nth-child(2){top:-50%;left:-40%;-webkit-transform:rotate(-20deg) scale(1.1);transform:rotate(-20deg) scale(1.1)}button.__cr_18oYn.__cr_3WPlN i:nth-child(3){top:-50%;right:-40%;-webkit-transform:rotate(20deg) scale(1);transform:rotate(20deg) scale(1);-webkit-animation-delay:.1s;animation-delay:.1s}button.__cr_18oYn.__cr_3WPlN i:nth-child(4){bottom:-70%;left:-100%;-webkit-transform:rotate(-30deg) scale(.9);transform:rotate(-30deg) scale(.9);-webkit-animation-delay:.1s;animation-delay:.1s}button.__cr_18oYn.__cr_3WPlN i:nth-child(5){bottom:-70%;right:-100%;-webkit-transform:rotate(30deg) scale(1);transform:rotate(30deg) scale(1);-webkit-animation-delay:.2s;animation-delay:.2s}</style><style type="text/css">@-webkit-keyframes __cr_2ok56{0%{height:2em}to{height:4.5em}}@keyframes __cr_2ok56{0%{height:2em}to{height:4.5em}}.__cr_a9FPV{width:100%;height:4.5em;outline:0;border-radius:.2em;border:1px solid rgba(0, 149, 255, 0.5)}.__cr_a9FPV.__cr_Hl2dj,.__cr_a9FPV:focus{border-color:rgb(0, 149, 255);box-shadow:inset 0 0 2px rgba(0, 149, 255, 0.5),0 0 5px rgba(0, 149, 255, 0.5)}.__cr_a9FPV.__cr_1u-Xv{height:2em}.__cr_a9FPV.__cr_AyiSy{border-radius:0 0 .2em .2em;border-color:red}.__cr_a9FPV.__cr_1LAZj{-webkit-animation:__cr_2ok56 .6s;animation:__cr_2ok56 .6s}</style></head><body class="b-layout"><div data-extend="Tracking" data-subscribe="on_dom_ready: gatrack_queue_ni &quot;cabinet_login&quot; &quot;company&quot; []"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--[if IE 8 ]> <html class="ie8"> <![endif]-->
+<!--[if IE 9 ]> <html class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->  <!--<![endif]-->
+    
+        
+    <iframe src="https://my.prom.ua/remote/wormhole/iframe?my.prom.ua" id="wormhole" style="display: none; width: 0px; height: 0px;"></iframe><script type="text/javascript" async="" src="https://www.google-analytics.com/plugins/ua/ecommerce.js"></script><script src="https://connect.facebook.net/signals/config/1717139881860563?v=2.8.12&amp;r=stable" async=""></script><script async="" src="//connect.facebook.net/en_US/fbevents.js"></script><script type="text/javascript">
+        window.clerkStats = [];
+        window.CLERK_CONFIG = {endpointUrl: "//tracker.prom.ua/endpoint"};
+        window.GoogleAnalyticsObject = 'gaUA';
+        window.gaUA=window.gaUA||function(){(window.gaUA.q=window.gaUA.q||[]).push(arguments)};
+        window.gaUA.l = +new Date;
+        window._io_data = [];
+    </script>
+    <script type="text/javascript" src="https://static-cache.ua.uaprom.net/js/adv_teasers.js?r=bedeef1d063dc282626b38883b4b19df" defer=""></script>
+        <script type="text/javascript" src="https://www.google-analytics.com/analytics.js" async=""></script>
+
+        <title>
+    Кабинет компании 
+</title>
+        <meta charset="utf-8" />
+        
+    
+        <meta name="verify-reformal" content="ec25c33da3cb77a325b10d78" />
+
+        
+            
+    
+    <meta name="description" content="Prom.ua — Лидер онлайн-торговли в Украине. Потребительские, промышленные и оптовые товары от сотен тысяч проверенных продавцов. Все для вашего бизнеса, быта и отдыха!" />
+
+        
+        
+    <link rel="shortcut icon" type="image/x-icon" href="https://static-cache.ua.uaprom.net/favicon.ico?r=ddc76b4e406ee37dd8f14e8fc42f07d4" />
+
+        
+
+
+
+
+
+
+
+    <meta name="yandex-verification" content="6cd1f8025705cc95" />
+
+        
+    <link href="https://static-cache.ua.uaprom.net/css/cabinet.styl.css?r=06c25c3a039318cc840480afed6ec257" media="screen" rel="stylesheet" type="text/css" />
+    <link href="https://static-cache.ua.uaprom.net/css/cabinet_bem.styl.css?r=95c5275ee404910b337c02ab1a964219" media="screen" rel="stylesheet" type="text/css" />
+    <link href="https://static-cache.ua.uaprom.net/css/cabinet_bem_core_with_icons.styl.css?r=82cfe3f552c0ade3a124c9f4f45efa45" media="screen" rel="stylesheet" type="text/css" />
+    <link href="https://static-cache.ua.uaprom.net/css/cabinet_bem_core.styl.css?r=46073bc732ca877e1dcb1867e5fcf7af" media="screen" rel="stylesheet" type="text/css" />
+
+        <link href="https://static-cache.ua.uaprom.net/css/smart-app-banner.css?r=f830c776eb6db27296fd11994acdb0fb" media="screen" rel="stylesheet" type="text/css" />
+        <link href="https://static-cache.ua.uaprom.net/css/ckeditor.styl.css?r=0372906e59735a9b52f2c232d83c5e54" media="screen" rel="stylesheet" type="text/css" />
+
+        <link href="https://static-cache.ua.uaprom.net/css/portal_cart.css?r=969a16254a6abbe52cdc1557ea76f951" media="screen" rel="stylesheet" type="text/css" />
+        
+
+
+        
+        
+    
+
+    
+
+    <script type="text/javascript">
+        (function(){var a=[].slice;window.is_debug=!1,window.protolog=function(){return{debug:function(){var b;b=1&lt;=arguments.length?a.call(arguments,0):[]}}}(),window.AppState={stateid:1,realm:void 0}}).call(this);
+    </script>
+    
+    <!--[if lte IE 8]>
+        <script type="text/javascript" src="/js/lib/es5-shimify-min.js"></script>
+        <script type="text/javascript" src="/js/lib/ie_indexof.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+        <script type="text/javascript" src="/js/lib/json2ify-min.js"></script>
+    <![endif]-->
+    <!--[if lte IE 9]>
+        <script type="text/javascript" src="/js/lib/console.js"></script>
+    <![endif]-->
+    <!--[if IE]>
+        <script type="text/javascript" src="/js/lib/classList.min.js"></script>
+    <![endif]-->
+
+    
+    
+
+
+        
+    
+
+    
+    
+        <!-- Facebook Pixel Code -->
+        <script>
+            !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+            n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+            document,'script','//connect.facebook.net/en_US/fbevents.js');
+
+            fbq('init', '1717139881860563');
+            fbq('track', "PageView");
+        </script>
+        <noscript>
+            &lt;img
+                height="1" width="1" style="display:none"
+                src="https://www.facebook.com/tr?id=1717139881860563&amp;ev=PageView&amp;noscript=1"
+            /&gt;
+        </noscript>
+        <!-- End Facebook Pixel Code -->
+
+
+        
+        
+    
+        <meta name="apple-itunes-app" content="app-id=935673427" />
+        <meta name="google-play-app" content="app-id=com.uaprom.prom" />
+
+        <link rel="apple-touch-icon" href="https://static-cache.ua.uaprom.net/image/smart_banner_ios.png?r=b7a1bd2321c8008b08f4d3d6b449d4a1" />
+        <link rel="android-touch-icon" href="https://static-cache.ua.uaprom.net/image/smart_banner_android.png?r=8c5b9ed34be04743a7ed7b442bf1fab8" />
+
+        
+        
+        
+    
+    
+        
+    
+    <script type="text/javascript">(function(d) { var f = d.createElement('iframe'); f.id = 'clerk_iframe'; f.src = 'https://my.prom.ua/~clerk/iframe.html'; f.style.display = "none"; d.body.appendChild(f); })(document);</script><iframe id="clerk_iframe" src="https://my.prom.ua/~clerk/iframe.html" style="display: none;"></iframe>
+    <script type="text/javascript" src="//tracker.prom.ua/clerk/bare.js" async=""></script>
+
+        
+
+        
+        
+
+        <a name="top"></a>
+        
+    
+    
+    
+
+
+        
+
+        
+    <noscript>
+        &lt;style type="text/css"&gt;
+            div#noscript {
+                text-align: center;
+                position: relative;
+                top: 0;
+                left: 0;
+                margin-top: 10px;
+                margin-bottom: 10px;
+                background: red;
+                padding: 30px;
+            }
+            div#noscript h1, div#noscript a {
+                color: white;
+            }
+        &lt;/style&gt;
+        &lt;div id="noscript"&gt;
+            &lt;h1&gt;Внимание!&lt;/h1&gt;
+            &lt;h1&gt;
+                В вашем браузере отключен JavaScript, Вы не сможете корректно заполнять информацию.
+            &lt;/h1&gt;
+            &lt;br/&gt;
+            &lt;br/&gt;
+            &lt;h1&gt;
+                Для дальнейшей работы включите JavaScript.
+                &lt;a href="https://www.google.com/adsense/support/bin/answer.py?hl=ru&amp;answer=12654"&gt;
+                    Как включить JavaScript (инструкция)
+                &lt;/a&gt;
+            &lt;/h1&gt;
+        &lt;/div&gt;
+    </noscript>
+
+        
+        
+    
+
+    <div class="x-header x-header_type_cabinet">
+        <div class="x-header__spacer"></div>
+        <div id="head_control_panel" class="x-header__sticky">
+            <div class="x-header__container">
+                <div class="x-header__table">
+                    <div class="x-header__left-content">
+                        <div class="x-header__content">
+                            <div class="x-header__logo ">
+                                <a href="https://prom.ua/" class="x-header__logo-link">
+                                    <img class="x-header__logo-img" src="https://static-cache.ua.uaprom.net/image/portal/UA/logo.png?r=b90bfe0bb980f90fedff1ca2fe785651" srcset="https://static-cache.ua.uaprom.net/image/portal/UA/logo.svg?r=ed43d3faf9a09dac8d0264c4d01013ee 2x" alt="Prom.ua" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="x-header__right-content">
+                        <ul class="x-header__controls">
+                            <li class="x-header__controls-item">
+                                    
+    
+    <div class="x-header__zakupki-logo">
+        <a class="x-header__zakupki-link" target="_blank" href="http://zakupki.prom.ua/?source_id=prom_main&amp;utm_source=prom.ua&amp;utm_medium=link&amp;utm_content=main_page&amp;utm_campaign=all">
+            <span class="x-header__zakupki-logo-icon"></span>
+            <span>
+                zakupki.prom.ua
+            </span>
+        </a>
+    </div>
+
+                            </li>
+                            <li class="x-header__controls-item" data-extend="DynamicHeader" data-header-components-url="/remote/header/portal_header_v2_components?locale=ru" data-header-components-key="header" data-header-components-broadcast="notification">
+                                <ul class="x-header__auth">
+                                </ul>
+                            </li>
+                            <li class="x-header__controls-item">
+                                <div class="x-header__auth" data-extend="DynamicHeader" data-header-components-bus="1" data-header-components-key="notification"></div>
+                            </li>
+                                <li class="x-header__controls-item" data-extend="GlobalFavorites" data-favorites-url="/comparison/list">
+                                    
+    <div>
+        <!-- This subtree should be replaced with React component -->
+        <a class="x-header__controls-link" title="Избранное" data-qaid="favorite">
+            
+    <svg xmlns="http://www.w3.org/2000/svg" class="x-header__controls-icon">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/image/svg_sprites/portal/defs/sprite.svg#svg-heart-thick"/>
+    </svg>
+
+        </a>
+        <!-- end of replace -->
+    </div>
+
+                                </li>
+                                <li class="x-header__controls-item js-shopping-cart-button-container">
+                                    <a class="x-header__controls-link" title="Корзина">
+                                        
+    <svg xmlns="http://www.w3.org/2000/svg" class="x-header__controls-icon">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/image/svg_sprites/portal/defs/sprite.svg#svg-cart"/>
+    </svg>
+
+                                        <script type="text/html">
+                                            &lt;span class="x-header__controls-counter js-shopping-cart-counter"&gt;0&lt;/span&gt;
+                                        </script>
+                                    </a>
+                                </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        
+        
+
+        
+        
+<!--[if lte IE 8]>
+        
+        <div class="b-browser-update h-mt-65">
+            <div class="b-info-panel b-info-panel_theme_cornsilk">
+                <h4 class="large-header">ВНИМАНИЕ!</h4>
+                <p class="h-bold">
+                    <span class="icon-ic_alert" ></span>&nbsp;
+                    Вы используете устаревшую версию браузера Internet Explorer
+                </p>
+                <p class="paragraph-top">
+                    
+                        При использовании Internet Explorer 6, 7, 8 возможна некорректная и медленная работа сайта, часть функционала может быть недоступна.
+                        Настоятельно Вам рекомендуем выбрать и установить любой из современных браузеров. Это бесплатно и займет всего несколько минут.
+                    
+                </p>
+            </div>
+            <ul class="b-browser-update__list">
+                    <li class="b-browser-update__list-item b-browser-update__list-item_even_yes">
+                    <a href="http://www.mozilla.com/firefox/" target="_blank">
+                        <img alt="" height="53" src="https://static-cache.ua.uaprom.net/image/update_browser/firefox_middle.png?r=6cc734c8bc911f8f6cf2b29379804340" width="53" />
+                        <span class="large-header">Mozilla Firefox</span>
+                    </a>
+                </li>
+                    <li class="b-browser-update__list-item">
+                    <a href="http://www.google.com/chrome" target="_blank">
+                        <img alt="" height="53" src="https://static-cache.ua.uaprom.net/image/update_browser/chrome_middle.png?r=39734160125e1eea5008118cf0625fb2" width="53" />
+                        <span class="large-header">Google Chrome</span>
+                    </a>
+                </li>
+                    <li class="b-browser-update__list-item b-browser-update__list-item_even_yes">
+                    <a href="http://www.opera.com/download/" target="_blank">
+                        <img alt="" height="53" src="https://static-cache.ua.uaprom.net/image/update_browser/opera_middle.png?r=4392dcf55caaffd27c2ab2ebb6179600" width="53" />
+                        <span class="large-header">Opera</span>
+                    </a>
+                </li>
+                    <li class="b-browser-update__list-item">
+                    <a href="http://www.microsoft.com/windows/Internet-explorer/default.aspx" target="_blank">
+                        <img alt="" height="53" src="https://static-cache.ua.uaprom.net/image/update_browser/ie_middle.png?r=5241424ef4d6ca1600de095efd6f1aca" width="53" />
+                        <span class="large-header">Internet Explorer</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="clear"></div>
+            <p class="paragraph-top">
+                Если по каким либо причинам Вы не имеете доступа к возможности установки программ, то рекомендуем воспользоваться "portable" версиями браузеров. Они не требуют инсталляции на компьютер и работают с любого диска или вашей флешки: <a href="http://portableapps.com/apps/internet/firefox_portable" target="_blank">Mozilla Firefox</a> или <a href="http://portableapps.com/apps/internet/google_chrome_portable" target="_blank">Google Chrome</a>
+            </p>
+        </div>
+<![endif]-->
+
+        
+        
+
+        
+        <div class="b-page h-mt-10">
+            <div class="h-navigation-holder">
+                
+            </div>
+        </div>
+
+        
+    
+    <div class="b-page h-mb-40">
+        
+    
+    
+    <div id="cabinet_flash_message" class=" h-hidden b-info-panel b-info-panel_theme_cornsilk h-mb-15" data-extend="FlashMessage ITogglable" data-flashmessage-event="flash_message_main" data-flashmessage-scroll-top="true">
+        <ul class="b-dashboard-list">
+        </ul>
+    </div>
+
+
+        
+
+        
+        <div data-extend="ChecklistRegistration" data-checklist-sales-options="[{&quot;text&quot;: &quot;\u0423\u0436\u0435 \u043f\u0440\u043e\u0434\u0430\u044e, \u043d\u043e \u043d\u0435 \u0432 \u0438\u043d\u0442\u0435\u0440\u043d\u0435\u0442\u0435&quot;, &quot;value&quot;: 421}, {&quot;text&quot;: &quot;\u0422\u043e\u043b\u044c\u043a\u043e \u043d\u0430\u0447\u0438\u043d\u0430\u044e \u0441\u0432\u043e\u0435 \u0434\u0435\u043b\u043e&quot;, &quot;value&quot;: 422}, {&quot;text&quot;: &quot;\u042f \u0443\u0436\u0435 \u043f\u0440\u043e\u0434\u0430\u044e \u043e\u043d\u043b\u0430\u0439\u043d, \u043d\u043e \u043d\u0430 \u0434\u0440\u0443\u0433\u043e\u0439 \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0435/\u0441\u0430\u0439\u0442\u0435&quot;, &quot;value&quot;: 423}, {&quot;text&quot;: &quot;\u041f\u0440\u043e\u0441\u0442\u043e \u043e\u0441\u043c\u0430\u0442\u0440\u0438\u0432\u0430\u044e\u0441\u044c&quot;, &quot;value&quot;: 424}, {&quot;text&quot;: &quot;\u0421\u043e\u0437\u0434\u0430\u044e \u0438\u043d\u0442\u0435\u0440\u043d\u0435\u0442-\u043c\u0430\u0433\u0430\u0437\u0438\u043d/\u0441\u0430\u0439\u0442 \u0434\u043b\u044f \u043a\u043b\u0438\u0435\u043d\u0442\u0430&quot;, &quot;value&quot;: 425}]" data-checklist-fields="{&quot;phone&quot;: &quot;&quot;, &quot;email&quot;: &quot;mail0557812@mailsac.com&quot;, &quot;sales&quot;: &quot;&quot;, &quot;name&quot;: &quot;&quot;}" data-checklist-addvisible="{&quot;phone&quot;: &quot;&quot;}"></div>
+    
+    </div>
+
+
+
+        
+        
+        
+        <div class="x-footer x-footer_type_cabinet">
+            
+    
+        <div class="x-footer__first-part" data-qaid="footer_useful_urls">
+            <div class="x-footer__container">
+                <div class="x-footer__links-holder">
+                    <dl class="x-footer__col" data-qaid="footer_customers"><dt class="x-footer__title">Покупателям</dt><dd class="x-footer__item"><a class="x-footer__link" href="https://prom.ua/how_to_buy">Как покупать на Prom.ua</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="https://prom.ua/certification_by_prom">О сертифицированных компаниях</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="https://prom.ua/no_risk_purchase_customer">Как покупать с Покупкой без риска</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="https://prom.ua/how_to_leave_review">Как оставить полезный отзыв</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="https://prom.ua/safe_shopping">Программа Защиты Покупателей</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="https://support.prom.ua/documents/207?utm_campaign=footer&amp;utm_medium=Portal&amp;utm_source=link2support_safe_shopping">Рекомендации по безопасным покупкам</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="https://prom.ua/why_new_email">Покупателям с почтой .ru</a></dd></dl><dl class="x-footer__col" data-qaid="footer_vendors"><dt class="x-footer__title">Продавцам</dt><dd class="x-footer__item"><a class="x-footer__link" href="https://prom.ua/join-now?source_id=new.footer#how_to_start_selling">Как продавать на Prom.ua</a></dd><dd class="x-footer__item"><a class="x-footer__link" data-qaid="tariffs" href="https://prom.ua/how_to_order">Тарифы</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="https://prom.ua/no_risk_purchase_merchant">Как продавать с Покупкой без риска</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="https://prom.ua/testimonials">Отзывы клиентов Prom.ua</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="https://prom.ua/companies-stats-today.html">Рейтинг компаний по посещениям</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="https://prom.ua/terms-of-use">Пользовательское соглашение</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="https://prom.ua/privacy-policy">Политика конфиденциальности</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="https://support.prom.ua/documents/label/63?utm_campaign=footer&amp;utm_medium=Portal&amp;utm_source=link2support_portal_rules">Правила пользования порталом</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="https://prom.ua/useful-content">Правила оформления товаров и услуг</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="http://www.google.com.ua/adwords/thirdpartypartners/" target="_blank">Руководство AdWords</a></dd></dl><dl class="x-footer__col" data-qaid="footer_about_as"><dt class="x-footer__title">О нас</dt><dd class="x-footer__item"><a class="x-footer__link" href="https://prom.ua/about_us">О Prom.ua</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="https://prom.ua/media">СМИ о нас</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="https://evo.company/category/vacancies">Работа в Prom.ua</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="https://my.prom.ua/cabinet/store/service/product_adv/dashboard">Реклама на Prom.ua</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="https://support.prom.ua/questions?utm_campaign=footer&amp;utm_medium=Portal&amp;utm_source=link2support_company_questions">Справка и FAQ</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="https://prom.ua/contact_us">Администрация</a></dd></dl><dl class="x-footer__col" data-qaid="footer_partners"><dt class="x-footer__title">Партнеры</dt><dd class="x-footer__item"><a class="x-footer__link" href="https://evo.business/?utm_source=prom.ua&amp;utm_campaign=portal&amp;utm_medium=referral">EVO.business</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="http://kabanchik.ua/">Kabanchik.ua</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="http://www.ria.com">RIA.ua</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="http://crafta.ua">Crafta.ua</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="http://zakupki.prom.ua/?source_id=prom_footer&amp;utm_source=prom.ua&amp;utm_medium=link&amp;utm_content=footer&amp;utm_campaign=all">Zakupki.prom.ua</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="https://bigl.ua/">Bigl.ua</a></dd><dd class="x-footer__item"><a class="x-footer__link" href="https://prom.ua/site_partners">Официальные дилеры Prom.ua</a></dd></dl><dl class="x-footer__countries-col" data-qaid="footer_countries"><dt class="x-footer__title">Другие страны</dt><dd class="x-footer__countries-item"><a class="x-footer__link" href="http://deal.by">Беларусь</a></dd><dd class="x-footer__countries-item"><a class="x-footer__link" href="http://satu.kz">Казахстан</a></dd><dd class="x-footer__countries-item"><a class="x-footer__link" href="http://prom.md">Молдова</a></dd><dd class="x-footer__countries-item"><a class="x-footer__link" href="http://negociol.com">Бразилия</a></dd><dd class="x-footer__countries-item"><a class="x-footer__link" href="http://ticaretimiz.com">Турция</a></dd></dl>
+                </div>
+            </div>
+        </div>
+        <div class="x-footer__second-part" data-qaid="footer_social_links">
+            <div class="x-footer__container">
+                <div class="x-footer-extra"><div class="x-footer-extra__table"><div class="x-footer-extra__social-cell" data-qaid="footer_social"><a href="https://www.youtube.com/prom4ua" class="x-footer-extra__social-item">
+    <svg xmlns="http://www.w3.org/2000/svg" class="x-footer-extra__social-icon">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/image/svg_sprites/portal/defs/sprite.svg#svg-youtube-thick"/>
+    </svg>
+</a><a href="https://www.facebook.com/prom.ua" class="x-footer-extra__social-item">
+    <svg xmlns="http://www.w3.org/2000/svg" class="x-footer-extra__social-icon">
+        <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/image/svg_sprites/portal/defs/sprite.svg#svg-facebook-thick"/>
+    </svg>
+</a></div><div class="x-footer-extra__app-cell" data-qaid="footer_apps"><a class="x-footer-extra__app-item" href="https://play.google.com/store/apps/details?id=ua.prom.b2c&amp;referrer=utm_source%3DMP"><img src="https://static-cache.ua.uaprom.net/image/portal/play_market.png?r=89c3386b18712c87cc551de6d0f3a5fe" alt="google play market" srcset="https://static-cache.ua.uaprom.net/image/portal/2x/play_market.png?r=3feada8d2620c1d1144b85d6bba964d7 2x" /></a><a class="x-footer-extra__app-item" href="https://itunes.apple.com/app/id1120682274"><img src="https://static-cache.ua.uaprom.net/image/portal/app_store.png?r=6cd5ae9e13b6bfe568916d4b52156398" alt="apple app store" srcset="https://static-cache.ua.uaprom.net/image/portal/2x/app_store.png?r=4d644a2c6b925e80f82fafc2c625b19b 2x" /></a></div><div class="x-footer-extra__counters-cell">
+    
+        
+    <script type="text/javascript">
+     document.write("&lt;img src='//counter.yadro.ru/hit;uaprom?t14.2;r"+
+            escape(document.referrer)+((typeof(screen)=="undefined")?"":
+            ";s"+screen.width+"*"+screen.height+"*"+(screen.colorDepth?
+                    screen.colorDepth:screen.pixelDepth))+";u"+escape(document.URL)+
+            ";"+Math.random()+
+            "' alt='' title='LiveInternet: показано число просмотров за 24"+
+            " часа, посетителей за 24 часа и за сегодня' "+
+            "style='position: absolute; left: -9999px; top: 0'"+
+            "border=0 width=88 height=31&gt;");//--&gt;
+    </script><img src="//counter.yadro.ru/hit;uaprom?t14.2;rhttps%3A//prom.ua/join-now%3Fsource_id%3Dtxt.register%26locale%3Dru;s1920*1080*24;uhttps%3A//my.prom.ua/cabinet/edit-checklist;0.9322468338703354" alt="" title="LiveInternet: показано число просмотров за 24 часа, посетителей за 24 часа и за сегодня" style="position: absolute; left: -9999px; top: 0" border="0" width="88" height="31" />
+
+
+
+
+</div><div class=" x-footer-extra__spacer-cell"></div><div class="x-footer-extra__copyright-cell">© 2018 Prom.ua</div></div></div>
+            </div>
+        </div>
+
+        </div>
+
+        
+    <div id="messenger" class="b-messenger">
+        <div class="b-messenger-box h-hidden js-messenger-box">
+            <span class="b-messenger-box__close icon-close_messsage js-messenger-close">x</span>
+            <div class="b-messenger-box__header">
+                <strong class="b-messenger-box__phone js-messenger-phone h-mb-10 h-block"></strong>
+                <p class="b-messenger-box__text js-messenger-person"></p>
+            </div>
+            <div class="b-messenger-box__holder">
+                <div class="h-mb-10">
+                    <span class="js-messenger-title"></span>
+                    <span class="js-messenger-title-text h-vertical-middle"></span>
+                </div>
+                <p class="b-messenger-box__text"><a class="js-messenger-company"></a></p>
+            </div>
+        </div>
+    </div>
+    <div id="messenger2" class="b-messenger">
+        <div class="b-messenger-box h-hidden js-messenger-box">
+            <span class="b-messenger-box__close icon-close_messsage js-messenger-close">x</span>
+            <div class="b-messenger-box__header">
+                <strong class="b-messenger-box__phone h-block">Были ли у вас проблемы со связью?</strong>
+            </div>
+            <div class="b-messenger-box__holder">
+                <table class="b-grids">
+                    <tbody><tr>
+                        <td class="b-grids__item">
+                            <a href="#" class="b-button h-block js-messenger-problems" target="_blank">
+                                <i class="b-button__aligner"></i>
+                                <span class="b-button__text">Да</span>
+                            </a>
+                        </td>
+                        <td class="b-grids__item h-width-30"></td>
+                        <td class="b-grids__item">
+                            <span class="b-button h-block js-messenger-close">
+                                <i class="b-button__aligner"></i>
+                                <span class="b-button__text">Нет</span>
+                            </span>
+                        </td>
+                    </tr>
+                </tbody></table>
+            </div>
+        </div>
+    </div>
+
+        
+    
+
+
+            
+    <table class="b-side-navigation qa-vertical-help-block">
+        <tbody><tr>
+            <td class="b-side-navigation__cell h-height-400 h-vertical-bottom qa-customer-questions-link">
+                
+    
+        <a href="https://support.prom.ua/questions?utm_campaign=https%3A//my.prom.ua/cabinet/edit-checklist&amp;utm_medium=Cabinet_company&amp;utm_source=link2support_company_questions" target="_blank">
+            <img src="https://static-cache.ua.uaprom.net/image/ask_question.png?r=924f29f1b9927468b638d1fd7b5ec001" alt="" class="h-block h-mb-3" />
+        </a>
+
+            </td>
+        </tr>
+        <tr>
+            <td class="b-side-navigation__cell h-vertical-top qa-how-to-buy-link">
+                    
+    
+        <script type="text/javascript">
+            window.reformalOptions = {
+                project_id: 247036,
+                show_tab: false,
+                project_host: "prom-ua.reformal.ru"
+            };
+        </script>
+        
+    
+
+        <a href="http://prom-ua.reformal.ru" onclick="Reformal.widgetOpen();return false;" onmouseover="Reformal.widgetPreload();">
+            <img src="https://static-cache.ua.uaprom.net/image/feedback_suggestions.png?r=f0c2fd12eb2fe2e2cb22a7c873c50968" alt="" class="h-block" />
+        </a>
+
+            </td>
+        </tr>
+    </tbody></table>
+
+
+        
+        
+    
+        <script>
+            /* &lt;![CDATA[ */
+            var google_conversion_id = 975346251;
+            var google_conversion_label = "pDIgCJWN5WAQy7SK0QM";
+            var google_custom_params = window.google_tag_params;
+            var google_remarketing_only = true;
+            /* ]]&gt; */
+        </script>
+        <script src="//www.googleadservices.com/pagead/conversion.js"></script><script src="https://googleads.g.doubleclick.net/pagead/viewthroughconversion/975346251/?random=1521647974009&amp;cv=9&amp;fst=1521647974009&amp;num=1&amp;label=pDIgCJWN5WAQy7SK0QM&amp;guid=ON&amp;resp=GooglemKTybQhCsO&amp;eid=376635470&amp;u_h=1080&amp;u_w=1920&amp;u_ah=1040&amp;u_aw=1920&amp;u_cd=24&amp;u_his=4&amp;u_tz=120&amp;u_java=false&amp;u_nplug=4&amp;u_nmime=5&amp;frm=0&amp;url=https%3A%2F%2Fmy.prom.ua%2Fcabinet%2Fedit-checklist&amp;ref=https%3A%2F%2Fprom.ua%2Fjoin-now%3Fsource_id%3Dtxt.register%26locale%3Dru&amp;tiba=%D0%9A%D0%B0%D0%B1%D0%B8%D0%BD%D0%B5%D1%82%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%B0%D0%BD%D0%B8%D0%B8&amp;rfmt=3&amp;fmt=4"></script>
+        <noscript>
+            &lt;div style="display:inline;"&gt;
+                &lt;img height="1" width="1" style="border-style:none;" alt=""
+                     src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/975346251/?
+                     value=1.00&amp;amp;currency_code=UAH&amp;amp;label=pDIgCJWN5WAQy7SK0QM&amp;amp;guid=ON&amp;amp;script=0"/&gt;
+            &lt;/div&gt;
+        </noscript>
+
+
+
+        
+
+
+    
+    
+
+
+    
+    <div class="b-assistance-tools">
+
+        <div>
+            
+        </div>
+    </div>
+
+
+    
+
+    
+    <script type="text/javascript">
+        (function (){
+            if (!Object.keys) {
+                var scripts = document.getElementsByTagName('script')
+                  , me = scripts[scripts.length - 1]
+                  , shimify = document.createElement('script')
+                  ;
+
+                shimify.src = '/js/lib/es5-shimify-min.js';
+                document.body.insertBefore(shimify, me.nextSibling);
+            }
+        }());
+    </script>
+
+
+    
+    <script type="text/javascript">
+        window.AppState.realm = "cabinet";
+    </script>
+
+    
+    <script type="text/javascript">
+        
+        window.AppState.config = {"CS": {"URL_PREFIX": "", "IS_PREVIEW_MODE": false, "STATIC_BASE": "https://static-cache.ua.uaprom.net/", "SUPPORT": {"PHONE": ["+380 (44) 593 72 40", ""], "EMAIL": "support@prom.ua"}, "BIGL_HOME_PAGE": "https://bigl.ua", "CRM_ALLOWED_DISCOUNT_TAGS_FOR_MANAGER": true, "BIGL_SVG_URL": "https://static-cache.ua.uaprom.net/bigl/svg_sprites/defs/sprite.svg?r=8fb427ebffb5f35407cef01c7b57c0fb8a71f4ef", "IS_MOBILE_NATIVE": false, "BUNDLE_BASE_PATH": "https://static-cache.ua.uaprom.net/js/build/", "DEFAULT_COUNTRY": 194, "STATIC": {"PERSONAL_DATA_PROCESS_DOC": "https://static-cache.ua.uaprom.net/152-f3-personal-data.pdf?r=8fb427ebffb5f35407cef01c7b57c0fb8a71f4ef"}, "BIGL_SVG_PORTABLE_URL": "https://static-cache.ua.uaprom.net/bigl/svg_sprites/portable/defs/sprite.svg?r=8fb427ebffb5f35407cef01c7b57c0fb8a71f4ef", "CURRENT_LANG": "ru", "SHOPPING_CART": {"should_open_immediately": "", "cart_product_ids": [], "one_click_order_2_0_in_shopping_cart_v2": false, "cart_bigl_product_ids": [], "one_click_order_2_0_in_shopping_cart": false}, "BIGL_DOMAIN_NAME": "Bigl.ua", "BIGL_TITLE": "Bigl.ua", "NEED_EXTERNAL_HIT_COUNTERS": true, "IS_COMPANY_SITE": false, "COMPANY": {"cms_only": false, "is_premium_service_free": true, "METRO": {"buy_agr_url": "https://metro.prom.ua/a294477-oferta-kupvl-tovaru.html", "id": "2731875", "errand_agr_url": "https://metro.prom.ua/a294479-oferta-dostavki-tovaru.html"}}, "PHONE_EXAMPLE": "+38 039 1234567", "IS_UAPROM": true, "CATALOG_COOKIE_DOMAIN": ".prom.ua", "BESIDA": {"url": "wss://chat.my.prom.ua/ws", "token": "14230485", "social_links": [{"svg": "https://static-cache.ua.uaprom.net/image/lp/join-customer/google.svg?r=8fb427ebffb5f35407cef01c7b57c0fb8a71f4ef", "link": "https://my.prom.ua/remote/social_auth/google/start?register_company=False", "name": "google", "img": "https://static-cache.ua.uaprom.net/image/lp/join-customer/google.png?r=8fb427ebffb5f35407cef01c7b57c0fb8a71f4ef", "portal_title": "Google"}, {"svg": "https://static-cache.ua.uaprom.net/image/lp/join-customer/facebook.svg?r=8fb427ebffb5f35407cef01c7b57c0fb8a71f4ef", "link": "https://my.prom.ua/remote/social_auth/facebook/start?register_company=False", "name": "facebook", "img": "https://static-cache.ua.uaprom.net/image/lp/join-customer/facebook.png?r=8fb427ebffb5f35407cef01c7b57c0fb8a71f4ef", "portal_title": "Facebook"}], "isMobile": false}, "URL_FOR_PORTABLE_SEARCH_SUGGESTER": "//ac.prom.ua/search.js?term=", "BIGL": {"SOFTCUBE_API_URL": "https://tracker.softcube.com/api/v1", "SOFTCUBE_SITE_ID": "32922AD"}, "COUNTRY": {"code": "UA", "internal_phone_code": "0", "phone_code": "380", "phone_code_by_ip": "380", "currency": "\u0433\u0440\u043d.", "portable_phone_code": "38", "defaultCurrencyText": "\u0433\u0440\u043d", "delivery_ids": [194, 161, 16, 12, 73, 192, 198, 130, 185, 21, 101, 107]}, "IS_CMS": false, "LANG_URL_PREFIX": "", "CERTIFICATION_WIDGET_PORTAL_TOKEN": "prom", "WH_SUFFIX": "/remote/wormhole/iframe", "IS_MARKET": false, "PRODUCT_TYPES": {"b2c": "C", "b2b": "B", "service": "S"}, "TRACKING": {"source_version": "8fb427ebffb5f35407cef01c7b57c0fb8a71f4ef", "yandex_disabled": true, "google_dfp_enabled": true}, "CMS_CERTIFICATION_HISTORY": false, "COOKIE_DOMAIN*": "prom.ua", "ROUTING": {"blocks": {"related_category_url": "/remote/product_recommendations/get_related_categories"}, "ckeditor": {"UAPROM_STYLE": "https://static-cache.ua.uaprom.net/js/ckeditor_latest/style.css?r=dba2a378a862370132079020b98c2101", "CKEDITOR_BASEPATH": "https://static-cache.ua.uaprom.net/js/ckeditor_latest/", "IMAGE_UPLOAD_URL": "https://my.prom.ua/media/upload_image?profile=0&amp;preview_height=640&amp;use_existing=1&amp;preview_width=640", "ckeditor": "https://static-cache.ua.uaprom.net/js/ckeditor_latest/ckeditor.js?r=0a93fccf0e4668054deaf3d203012873", "customConfig": "https://static-cache.ua.uaprom.net/js/ckeditor_latest/config.js?r=69c319529dfa64b2dd65320e6579ab8e"}, "admin": {"crm_help": {"edit": "/remote/crm_help/edit", "create": "/remote/crm_help/create"}, "agency_rate": {"save_pro_sale_rate": "/remote/agency_rate/save_pro_sale_rate"}}, "NEW_SHOPPING_CART_PAGE_URL": "https://prom.ua/shopping_cart/carts", "cabinet": {"product": {"category": {"autocomplete": "//suggest.prom.ua/search_suggester/suggest_categories_for_cabinet.js"}}}, "portal": {"registration": {"save_checklist": "/remote/registration/save_checklist", "register_company": "/remote/registration/register_company"}}, "crm": {"crm_dashboard": {"overdue_leads": "/remote/crm_dashboard/ajax_get_overdue_leads", "chill_leads": "/remote/crm_dashboard/ajax_get_chill_leads", "150_days_leads": "/remote/crm_dashboard/ajax_get_150_days_leads", "hot_leads": "/remote/crm_dashboard/ajax_get_hot_leads", "warm_leads": "/remote/crm_dashboard/ajax_get_warm_leads", "unbind_today_leads": "/remote/crm_dashboard/ajax_get_unbind_today_leads"}}}, "CERTIFICATION_WIDGET_SERVICE_URL": "https://prom.ua/renders/certification_widget", "IS_RABBIT_FIXED_TO_STATIC": false, "CURRENT_ORIGIN": "https://my.prom.ua", "DEFAULT_BIGL_ORIGIN": "https://my.bigl.ua", "ajax_loader": "https://static-cache.ua.uaprom.net/image/ajax-arrows.gif?r=221d02a06f9fb5205c58c0c0b37cabc4", "DEFAULT_ORIGIN": "https://my.prom.ua", "CATEGORY": {"MAIN_SERVICE_ID": 2825, "MAIN_PRODUCT_ID": 29}, "DELIVERY_SERVICE_URL": "https://delivery.ua.prom.st", "ckeditor": {"timestamp": "8fb427ebffb5f35407cef01c7b57c0fb8a71f4ef"}, "HAS_BIGL_SIBLING": true, "CURRENT_DOMAIN": "Prom.ua", "REQUEST_GET_PARAMS": {}, "SMART_MOBILE_BANNER": true, "SOCIAL_AUTH": {"cs_backends": [{"publicName": "Google", "clientId": "99163991594-7f5vtih5hdiqfobpvbgm46gvmg3tofe4.apps.googleusercontent.com", "provider": "google"}, {"publicName": "Facebook", "fields": "id,email,first_name,last_name,gender,locale,picture,cover,age_range", "provider": "facebook", "version": "v2.10", "appId": 294117104031787, "scope": "email,public_profile"}], "backends": [{"image": "https://static-cache.ua.uaprom.net/image/social_auth/google_01.png?r=8fb427ebffb5f35407cef01c7b57c0fb8a71f4ef", "image_icon": "https://static-cache.ua.uaprom.net/image/social_auth/google_04.png?r=8fb427ebffb5f35407cef01c7b57c0fb8a71f4ef", "name": "google", "revoke_url": "https://my.prom.ua/remote/social_auth/google/revoke", "start_url": "https://my.prom.ua/remote/social_auth/google/start"}, {"image": "https://static-cache.ua.uaprom.net/image/social_auth/facebook_01.png?r=3b4e1a83a35323d3a657b3dd7827d102", "image_icon": "https://static-cache.ua.uaprom.net/image/social_auth/facebook_04.png?r=654cd2e277af04a39ad3a4137ae7d299", "name": "facebook", "revoke_url": "https://my.prom.ua/remote/social_auth/facebook/revoke", "start_url": "https://my.prom.ua/remote/social_auth/facebook/start"}]}, "is_debug": false, "MAPS": {"googleApiKey": "AIzaSyCi9xduhIKIM_LWjo1EwSnC9y3aMNhLzPQ", "google": "//maps.googleapis.com/maps/api/js?key=AIzaSyCi9xduhIKIM_LWjo1EwSnC9y3aMNhLzPQ", "yandex": {"ver2_script_url": "//api-maps.yandex.ru/2.0/?load=package.standard,package.route,package.geoQuery,package.geoObjects&amp;mode=release&amp;lang=ru-UA"}}, "PORTAL_HOME_PAGE": "https://prom.ua", "CONTENT_TIU_LOCAL_REGIONS_BY_DEFAULT": false, "CURRENT_COMPANY_SITE_ID": 2909727, "PRODUCT_ADV": {"PRODUCT_ADV_PR_43009": false, "crc_token_prefix": "v2:", "YOTTOS_ACCOUNT": "75251188-6ABF-4A39-87D0-A38280779F9B", "track_url": "/remote/context_ads/track_informer_views", "RTBHOUSE_ACCOUNT": "QxtZlGM12RPVV0c1IXga", "CRITEO_ACCOUNT": "27308", "click_rtbhouse_portal_url": "/remote/context_ads/click_rtbhouse_portal", "PROSALE_SOURCE_URL": "/remote/context_ads/get_prosale_source", "SOURCES": {"FEED_CRITEO": "feed_criteo", "PROM_CATALOG": "prom:catalog", "PROM_CATALOG_PORTABLE": "prom:catalog:portable", "FEED_RTBHOUSE": "feed_rtbhouse"}, "PRODUCT_ADV_PR_44095": true, "PRODUCT_ADV_PR_44642": false, "RTB_PARTNER_JS_CLASS": "js-rtb-partner", "DEVICE_PLATFORM": 0}, "FUNCTIONALITY": {"PRODUCT_ADV_CRITEO_DEDUP_V1": false, "CORE_COMPANY_OPINIONS_IMPROVEMENTS": false, "BIGL_PRODUCTS_STATUS_IN_ADV": true, "CONTENT_ADD_PRESENCE_SURE_YML": false, "PARTNER_CRITEO_ENABLED": true, "CORE_JSX_MIGRATED_SHOPPING_CART_MOBILE": true, "VAS_APPLICATION_PAY_PARTS": true, "CORE_PAYMENT_FOR_GROUP": false, "CORE_DELIVERY_FOR_GROUP": true, "CORE_WEB_PUSH_SOUNDS_SETTINGS": {"messages": true, "orders": true}, "CORE_QUALITY_STEPS_FILTERS": true, "VAS_NEW_RUSSIAN_POLICY_LAW": false, "CRM_WAYFORPAY_REGULAR_PAYMENTS_ENABLED": true, "use_stock_management": true, "BIGL_ADV_BIDS_RECOMMENDATIONS": true, "PARTNER_MI6_ENABLED": true, "CORE_NEW_CABINET_SEARCH": false, "FCM_CREDENTIALS": {"storageBucket": "promua-production.appspot.com", "databaseURL": "https://promua-production.firebaseio.com", "apiKey": "AIzaSyBBbi58fb_irUmCjvG799Z9qtQFHgnAWvU", "authDomain": "promua-production.firebaseapp.com", "messagingSenderId": "885173030464"}, "VAS_MARKET_SEARCH": true, "CORE_SHOPPING_CART_UPGRADE_SSR": false, "BIGL_TOP_15_SEGMENTS": true, "new_phone_field": true, "VAS_UKRPOSHTA_ADDITIONAL_FUNCTIONS": false, "CMS_ORDER_ELASTIC": true, "PRODUCT_ADV_RTBHOUSE_PORTAL": false, "CORE_SHOPPING_CART_UPGRADE_SITES": true, "PARTNER_RTB_HOUSE": true, "CRM_RECURRING_PAYMENTS_WITH_MINIMUM_BALANCE": true, "CRM_NEW_SOCIAL_AUTH": true, "CORE_DELIVERY_NEW": false, "CORE_PRODUCT_GROUP_RETURN_POLICY_SETTINGS": true, "CONTENT_OPINION_REQUIRE_LOGIN": false, "BIGL_CPA_NUMERIC_RATE": true, "VAS_GUARANTEED_PURCHASE_LANDING_TRANSLATION": true, "site_settings_seo_check_enabled": false, "BIGL_GA_IGNORE_FAKE_COMPANY": true, "PRODUCT_ADV_RTBHOUSE_DEDUP_V1": true, "PRODUCT_ADV_YOTTOS": true, "CORE_HIDE_YANDEX_METRICS": true, "CMS_IS_TRANSLATION_AVAILABLE": true, "CORE_JSX_MIGRATED_SHOPPING_CART": true, "BIGL_PAGINATOR_HISTORY": true, "VAS_PRODUCTS_FROM_SUBGROUPS": true, "CORE_REGISTRATION_DOCS": true, "CORE_WEB_PUSH_SOUNDS": false, "BIGL_GA_WATCH_ANCHORS": true, "BIGL_SHOPPING_CART_UPGRADE": false, "CKEDITOR_BACKUP_PLUGIN": true, "CRM_SMARTLOCK": true, "PRODUCT_ADV_DEBT_CABINET": true, "BIGL_NEW_ANALYTICS": true, "POOR_PROM_STORE": false, "VAS_DELIVERY_AUTO_TYP": false, "CORE_SHOPPING_CART_UPGRADE_PORTAL": true, "FIREBASE_WEB_PUSH_SUBSCRIPTIONS": [], "product_bad_content_enabled": false, "dfp_order_created": false, "new_company_mailer_templates_limits": false, "NEW_CUSTOM_ATTRIBUTES": null, "CONTENT_ORDER_FEEDBACK": true, "CRM_JOIN_NOW_MOBILE_AB_TEST": true, "PRODUCT_ADV_BELPROM_DENOMINATION": false, "CMS_SYNC_OLD_CABINET": false, "CONTENT_DISABLE_BANNER_FOR_MEIZU": true, "CONTENT_HIDE_MODELS_IN_CABINET": true, "new_custom_attributes": null, "BIGL_ADV_POW": true, "BIGL_FEEDBACK_POPUP_CATEGORY": false, "PRODUCT_ADV_PARTNER_STATS": true, "CONTENT_CLASSIFIED_ENABLED": false, "CORE_BESIDA": true, "CORE_NO_DB_ORDER": false, "content_gemius": true, "VAS_CMS_ONLINE_EDIT": false, "PRODUCT_ADV_BELPROM_DENOMINATION_IS_DONE": false, "VAS_WIDGET_FILTERS_SORTING": true, "CMS_CREATE_TTN_ON_CLICK": true, "VAS_LIQPAY_HOLD": false, "CONTENT_POWER_ENABLED": true, "BIGL_CPA_CABINET_PRODUCTS_SEARCH": true, "vas_shopping_cart_gemius": true, "BIGL_CPA_BILLING": true, "BIGL_CPA_NUMERIC_RATE_1_FRACTIONAL_DIGIT": true, "CORE_NON_RECOMMENDED_EMAIL_HINT": true, "CORE_BESIDA_ROOM_BAN": false, "CORE_DELIVERY_TOTAL": true, "BIGL_AUKRO_ORDERS_IN_CABINET": true, "is_i18n_enabled": true, "CORE_REGULAR_PAYMENTS": true, "BIGL_SHOPPING_CART_POW": true}, "APIKEYS": {"google": {"contacts": {"scopes": "https://www.google.com/m8/feeds", "api_key": "AIzaSyCMvrpQNrO0lGBUBC-9ltpbE8SXu1DcdGo", "client_id": "58553190892.apps.googleusercontent.com"}}}, "CERTIFICATION_WIDGET_JS_URL": "https://prom.ua/renders/js/vas_certification_widget/vas_certification_widget_wp.js", "REGION": {"detected_country_id": 194, "detected_id": 194009, "detected_name_f2": "\u041a\u0438\u0435\u0432\u0435", "id": null, "detected_name": "\u041a\u0438\u0435\u0432"}, "BIGL_SUPPORT": {"EMAIL": "support@bigl.ua"}, "USER": {"region_id": null, "ip": "213.160.144.204", "IS_MANAGER": false, "has_company": true, "IS_PROM_EMPLOYEE": false, "full_name": "\u041f\u043e\u043a\u0443\u043f\u0430\u0442\u0435\u043b\u044c", "id": 14230485, "first_name": "", "IS_SUDO_MODE": false, "company_id": 2909727, "IS_REMOTE_MODERATOR": false, "company_design_version": null, "IS_COMPANY_ADMIN": false, "email": "mail0557812@mailsac.com", "photo": "", "IS_ANONYMOUS": false, "has_verified_phone": false, "phone": null, "has_manager": false, "roles": ["company_owner"], "gender": null, "phone_raw": null, "IS_AGENCY_EMPLOYEE": false, "IS_COMPANY_OWNER": true, "IS_ADMIN": false}}, "ENV": {"disabled_init_queues": [], "DEFAULT_PROTOCOLS": ["IDom", "IHelper", "EventChannel", "NetIO", "ServiceLocator"], "disable_external_resources": false, "csq_mimetype": "text/csq-def"}};
+    
+    </script>
+
+
+
+    
+    
+        <script type="text/csq-def">
+        {"queue": "cfg-ready-queue", "modname": "SwindonWebSocket", "args": [], "type": "csm", "singleton": true}
+        </script>
+        <script type="text/csq-def">
+        {"queue": "bootstrap-queue", "modname": "Overlay", "args": [], "type": "csm", "singleton": true}
+        </script>
+        <script type="text/csq-def">
+        {"queue": "bootstrap-queue", "modname": "Popup", "args": [], "type": "csm", "singleton": true}
+        </script>
+        <script type="text/csq-def">
+        {"queue": "dom-ready-queue", "modname": "Alert", "args": [], "type": "csm", "singleton": false}
+        </script>
+        <script type="text/csq-def">
+        {"queue": "dom-ready-queue", "raw": "\n        (function(){\n           var imageOnDemand = require(\u0027imageOnDemand\u0027);\n           imageOnDemand.initialize(1000, 200);\n        })();\n        ", "modname": "imgOnDemand", "type": "raw", "singleton": false}
+        </script>
+        <script type="text/csq-def">
+        {"queue": "dom-ready-queue", "modname": "GlobalContactNow", "args": [], "type": "csm", "singleton": false}
+        </script>
+        <script type="text/csq-def">
+        {"queue": "cfg-ready-queue", "modname": "RContactNowController", "args": [{"submit_url": "/contact_now/send_email", "source": "company_site", "company_data_url": "/company_view/get_site_company_json", "message_texts": "{\"price\": {\"message\": \"\\u0417\\u0434\\u0440\\u0430\\u0432\\u0441\\u0442\\u0432\\u0443\\u0439\\u0442\\u0435! \\u0421\\u043a\\u0430\\u0436\\u0438\\u0442\\u0435, \\u043f\\u043e\\u0436\\u0430\\u043b\\u0443\\u0439\\u0441\\u0442\\u0430, \\u0441\\u043a\\u043e\\u043b\\u044c\\u043a\\u043e \\u0441\\u0442\\u043e\\u0438\\u0442?\", \"title\": \"\\u0423\\u0437\\u043d\\u0430\\u0442\\u044c \\u0446\\u0435\\u043d\\u0443\"}, \"service\": {\"message\": \"\", \"title\": \"\\u0417\\u0430\\u043a\\u0430\\u0437\\u0430\\u0442\\u044c \\u0443\\u0441\\u043b\\u0443\\u0433\\u0443\"}, \"presence\": {\"message\": \"\\u0417\\u0434\\u0440\\u0430\\u0432\\u0441\\u0442\\u0432\\u0443\\u0439\\u0442\\u0435! \\u041f\\u043e\\u0434\\u0441\\u043a\\u0430\\u0436\\u0438\\u0442\\u0435, \\u043f\\u043e\\u0436\\u0430\\u043b\\u0443\\u0439\\u0441\\u0442\\u0430, \\u043a\\u0430\\u043a \\u0441\\u043a\\u043e\\u0440\\u043e \\u0431\\u0443\\u0434\\u0435\\u0442 \\u0432 \\u043d\\u0430\\u043b\\u0438\\u0447\\u0438\\u0438? \\u0415\\u0441\\u0442\\u044c \\u043b\\u0438 \\u0443 \\u0432\\u0430\\u0441 \\u0447\\u0442\\u043e-\\u0442\\u043e \\u043f\\u043e\\u0445\\u043e\\u0436\\u0435\\u0435 \\u0441\\u0435\\u0439\\u0447\\u0430\\u0441?\", \"title\": \"\\u0423\\u0442\\u043e\\u0447\\u043d\\u0438\\u0442\\u044c \\u043d\\u0430\\u043b\\u0438\\u0447\\u0438\\u0435\"}}", "validate_url": "/contact_now/validate_form"}], "type": "csm", "singleton": true}
+        </script>
+        <script type="text/csq-def">
+        {"queue": "EXTERNAL_RESOURCES_QUEUE", "modname": "domain/GoogleDFP", "args": ["1048077", {"domain": "my_prom_ua", "pro_type": "free", "premium_prom": "false", "pro": "pro_off", "user_type": "signed_in_company", "comp_tag": ["{welcome_bonus}", "{manager_discount_25%_design_may}", "{discount_5_NY_first}", "{discount_10_NY_first}", "{january_promo}", "{test1_besplatiniki}", "{test2_besplatniki}", "{new_packages_test_free}", "{\u0421\u043a\u0438\u0434\u043a\u0430 \u043d\u0430 \u0441\u0435\u0440\u0432\u0438\u0441\u044b. \u0413\u043e\u0434\u043e\u0432\u043e\u0439 \u043f\u0430\u043a\u0435\u0442}", "{\u0421\u043a\u0438\u0434\u043a\u0430 \u043d\u0430 \u0441\u0435\u0440\u0432\u0438\u0441\u044b. \u041f\u043e\u043b\u0443\u0433\u043e\u0434\u043e\u0432\u043e\u0439 \u043f\u0430\u043a\u0435\u0442}", "{double_plus_sale_package}", "{plus_sale_package}", "{esputnik_all_sync}", "{30_free_2017\t}", "{confirm_email}", "{banner_2month}", "{banner_june_base}", "{free_email280817}", "{banner_free_3800\t}", "{testik}", "{ny_banner_fs}", "{no_ny_bespl}", "{C_free_notif_2111}", "{C_free_2811}", "{C_free_notif_2811}", "{C_free_0412}", "{C_free_notif_1212}", "{C_free_notif_1912}", "{C_free_notif_2612}", "{sale_jan_free}", "{C_free_notif_1001}"], "pro_stat": "draft", "prod_view": "pro_mixed", "buyer_type": "none", "page_id": "cabinet"}, {"category_img": [{"ad_sizes": [[994, 1], [994, 90], [994, 150]], "browser": [1254, 1]}, {"ad_sizes": [[738, 1], [738, 90], [738, 150], [738, 150], [738, 290]], "browser": [0, 0]}, {"ad_sizes": [[1250, 1], [1250, 90], [1250, 150]], "browser": [1510, 1]}], "banner_landing_promo": [{"ad_sizes": [[728, 1], [984, 1]], "browser": [1254, 1]}, {"ad_sizes": [290, 1], "browser": [0, 0]}, {"ad_sizes": [[1199, 1], [1199, 120]], "browser": [1510, 1]}], "context_list_bottom_general_adaptive": [{"ad_sizes": [[994, 1], [994, 90], [994, 150]], "browser": [1254, 1]}, {"ad_sizes": [[738, 1], [738, 90], [738, 150]], "browser": [0, 0]}, {"ad_sizes": [[1250, 1], [1250, 90], [1250, 150]], "browser": [1510, 1]}], "bottom_cabinet": [{"ad_sizes": [320, 1], "browser": [0, 0]}, {"ad_sizes": [920, 1], "browser": [1220, 1]}, {"ad_sizes": [640, 1], "browser": [640, 1]}], "banner_list": [{"ad_sizes": [[994, 1], [994, 90], [994, 150]], "browser": [1254, 1]}, {"ad_sizes": [[738, 1], [738, 90], [738, 150]], "browser": [0, 0]}, {"ad_sizes": [[1250, 1], [1250, 90], [1250, 150]], "browser": [1510, 1]}], "top_cabinet": [{"ad_sizes": [320, 1], "browser": [0, 0]}, {"ad_sizes": [920, 1], "browser": [1220, 1]}, {"ad_sizes": [640, 1], "browser": [640, 1]}], "category_branding": [{"ad_sizes": [[1254, 1], [1254, 90], [1254, 150]], "browser": [1254, 1]}, {"ad_sizes": [[998, 1], [998, 90], [998, 150]], "browser": [0, 0]}, {"ad_sizes": [[1510, 1], [1510, 90], [1510, 150]], "browser": [1510, 1]}]}, {"wufoo": {"url_for_form": "https://my.prom.ua/remote/util/get_csi_form_code", "redirect_place": "/cabinet/", "popup_title": "\u0410\u043d\u043a\u0435\u0442\u0430"}}], "type": "csm", "singleton": true}
+        </script>
+        <script type="text/csq-def">
+        {"queue": "cfg-ready-queue", "modname": "ShoppingCartNew", "args": ["js-shopping-cart-button-container", "catalog-desktop", null], "type": "csm", "singleton": false}
+        </script>
+        <script type="text/csq-def">
+        {"queue": "EXTERNAL_RESOURCES_QUEUE", "raw": "(function(){ \n            (function(){\n                var script = document.createElement(\u0027script\u0027); script.type = \u0027text/javascript\u0027; script.async = true; script.src = (\u0027https:\u0027 == document.location.protocol ? \u0027https://\u0027 : \u0027http://\u0027) + \u0027media.reformal.ru/widgets/v3/reformal.js\u0027; document.getElementsByTagName(\u0027head\u0027)[0].appendChild(script); }\n            )();\n         }())", "modname": "add_reformal", "type": "raw", "singleton": false}
+        </script>
+        <script type="text/csq-def">
+        {"queue": "dom-ready-queue", "raw": "\n        var date = new Date();\n        var tzo = date.getTimezoneOffset();\n        document.cookie = \"timezone_offset=\" + escape(tzo * (-1)) + \";path=/\";\n            if(window.init_float_header){\n                init_float_header(require(\u0027jquery\u0027));\n            }\n    ", "modname": "cs_on_dom_ready", "type": "raw", "singleton": false}
+        </script>
+
+
+    
+
+
+        
+    <script crossorigin="" src="https://static-cache.ua.uaprom.net/js/build/cabinet/cabinet_vendor.js?r=c8765c0785ebb85f2633441b482b2321"></script>
+
+
+
+    
+    <script crossorigin="" src="https://static-cache.ua.uaprom.net/js/build/cabinet/cabinet_wp.js?r=d66c65fbb5b8ca4fae56723b2d3f52a5"></script>
+
+
+    
+
+
+
+
+
+
+
+
+
+
+    
+    
+            <script type="text/javascript">
+                /* &lt;![CDATA[ */
+                jQuery(document).ready(function ($) {
+                    
+        var ajax_indicator_stop_words = ['static-cache','pv.gif', 'events.gif', 'ev.gif', 'track_infomer_views'];
+        var is_ajax_indicator_disabled = function (url) {
+            if (SW.c["disable_ajax_indicator"]) {
+                return true
+            }
+            if(!url){
+                return false
+            }
+            for(var i=0; i &lt; ajax_indicator_stop_words.length; i++){
+                if (url.indexOf(ajax_indicator_stop_words[i]) != -1){
+                    return true
+                }
+            }
+            return false
+        }
+        $("&lt;div&gt;&lt;/div&gt;", {class: "b-ajax-loading js-ajax-loading", style: "display: none;"}).appendTo($("body"));
+
+        $(".js-ajax-loading").data('ajax_stack', 0)
+        .ajaxSend(function (event, xhr, options) {
+            var $this = $(this);
+            if (!is_ajax_indicator_disabled(options.url)) {
+                if (options.loading) {
+                    $(options.loading).css("opacity", 0.7);
+                    offset = $(options.loading).offset();
+                    w = $(options.loading).outerWidth();
+                    h = $(options.loading).outerHeight();
+                    $this.css({position: "absolute", margin: 0, width: w, height: h, left: offset.left, top: offset.top, background: "none"});
+                }
+                $this.slideDown('fast');
+                $this.data('ajax_stack', $this.data('ajax_stack') + 1);
+            };
+        })
+        .ajaxComplete(function (event, xhr, options) {
+            var $this = $(this);
+            if (!is_ajax_indicator_disabled(options.url)) {
+                if(options.loading)
+                    $(options.loading).css("opacity", 1);
+
+                $this.data('ajax_stack', $this.data('ajax_stack') - 1);
+                setTimeout(
+                    function() {
+                        if ($this.data('ajax_stack') &lt;= 0) {
+                            $this.slideUp('fast');
+                        };
+                    },
+                    100);
+            };
+        });
+
+    
+                });
+                /* ]]&gt; */
+            </script>
+
+
+
+    
+
+        
+        <script type="text/javascript" src="//gde-default.hit.gemius.pl/gdejs/xgde.js"></script>
+
+
+
+
+
+
+
+    
+    
+
+    
+    <script type="text/javascript">
+        !function(c,o,l,b,e,r,t){
+            c['ColbertObject']=e;
+            c[e]=c[e]||function(){(c[e].q=c[e].q||[]).push(arguments)};c[e].l=1*new Date();
+            r=o.createElement(l);
+            r.async=1;r.crossOrigin='anonymous';r.src=b;
+            o.body.appendChild(r);
+        }(window,document,'script',"https://colbert.evo.company/static/colbert.js",'colbert')
+    </script><script async="" crossorigin="anonymous" src="https://colbert.evo.company/static/colbert.js"></script>
+
+    
+    <div data-extend="ColbertCreate" data-colbert-token="yoVQFWkq2jQxyB0n" data-colbert-options="{&quot;sha1&quot;: &quot;604a582d448ef4dfe0ef8e214576cefb997bf333&quot;, &quot;ts&quot;: 1521647973, &quot;env&quot;: [&quot;page:company_cabinet&quot;], &quot;id&quot;: 14230485}" data-colbert-colors="null"></div>
+
+
+
+
+            <div id="besida" data-extend="Besida" data-cabinet-user="False"></div>
+        
+    
+    <div data-bazooka="Tracking" data-bazid="0"></div>
+    
+    
+    <script type="text/javascript">
+        dataLayer = [];
+            dataLayer.push({"domain": "my_prom_ua"});
+            dataLayer.push({"pro_type": "free"});
+            dataLayer.push({"premium_prom": "false"});
+            dataLayer.push({"pro": "pro_off"});
+            dataLayer.push({"user_type": "signed_in_company"});
+            dataLayer.push({"comp_tag": "[u'{welcome_bonus}', u'{manager_discount_25%_design_may}', u'{discount_5_NY_first}', u'{discount_10_NY_first}', u'{january_promo}', u'{test1_besplatiniki}', u'{test2_besplatniki}', u'{new_packages_test_free}', u'{\\u0421\\u043a\\u0438\\u0434\\u043a\\u0430 \\u043d\\u0430 \\u0441\\u0435\\u0440\\u0432\\u0438\\u0441\\u044b. \\u0413\\u043e\\u0434\\u043e\\u0432\\u043e\\u0439 \\u043f\\u0430\\u043a\\u0435\\u0442}', u'{\\u0421\\u043a\\u0438\\u0434\\u043a\\u0430 \\u043d\\u0430 \\u0441\\u0435\\u0440\\u0432\\u0438\\u0441\\u044b. \\u041f\\u043e\\u043b\\u0443\\u0433\\u043e\\u0434\\u043e\\u0432\\u043e\\u0439 \\u043f\\u0430\\u043a\\u0435\\u0442}', u'{double_plus_sale_package}', u'{plus_sale_package}', u'{esputnik_all_sync}', u'{30_free_2017\\t}', u'{confirm_email}', u'{banner_2month}', u'{banner_june_base}', u'{free_email280817}', u'{banner_free_3800\\t}', u'{testik}', u'{ny_banner_fs}', u'{no_ny_bespl}', u'{C_free_notif_2111}', u'{C_free_2811}', u'{C_free_notif_2811}', u'{C_free_0412}', u'{C_free_notif_1212}', u'{C_free_notif_1912}', u'{C_free_notif_2612}', u'{sale_jan_free}', u'{C_free_notif_1001}']"});
+            dataLayer.push({"pro_stat": "draft"});
+            dataLayer.push({"prod_view": "pro_mixed"});
+            dataLayer.push({"buyer_type": "none"});
+            dataLayer.push({"page_id": "cabinet"});
+    </script>
+    
+    
+
+
+
+    
+
+<div class="b-ajax-loading js-ajax-loading" style="display: none;"></div></body></html>
