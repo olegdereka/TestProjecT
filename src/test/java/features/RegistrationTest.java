@@ -7,7 +7,7 @@ import ru.yandex.qatools.allure.annotations.Features;
 
 import static Pages.MainPage.TypeOfRegistration.company;
 import static Pages.MainPage.selectTypeOfRegistration;
-import static Pages.RegistrationAndLoginPage.makeRegistrationWeb;
+import static Pages.RegistrationAndLoginPage.makeRegistration;
 import static core.Api.checkSubjectInEmail;
 import static core.Api.createNewEmail;
 
@@ -28,7 +28,7 @@ public class RegistrationTest extends BaseTestConfiguration {
         selectTypeOfRegistration(company);
 
         //Make registration;
-        makeRegistrationWeb(registeredEmail, password);
+        makeRegistration(registeredEmail, password);
 
         //Check subject in email by API;
         checkSubjectInEmail(email);

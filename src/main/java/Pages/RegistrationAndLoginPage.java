@@ -20,7 +20,7 @@ public class RegistrationAndLoginPage {
      * @param password - password of user;
      */
     @Step
-    public static void makeRegistrationWeb(String email, String password){
+    public static void makeRegistration(String email, String password){
         registrationEmailField.setValue(email);
         registrationPasswordField.setValue(password);
         createSiteButton.click();

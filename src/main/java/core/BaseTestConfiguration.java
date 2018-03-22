@@ -21,7 +21,10 @@ import static core.TestData.baseUrl;
 
 public class BaseTestConfiguration {
 
-    public static String platform = "platform2";
+    //Set configuration for run test:
+    //platform1 - Chrome Web;
+    //platform2 - Chrome mobile;
+    public static String platform = "platform1";
 
     private ChromeDriver driver;
 
