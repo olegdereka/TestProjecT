@@ -11,9 +11,9 @@ import static com.codeborne.selenide.Selenide.$$;
 
 public class SearchResultPage {
 
-    public static SelenideElement resultFoSearch = $(".x-title h1");
-    public static ElementsCollection pagesOfSearchResults = $$(".x-pager__content .x-pager__item");
-    public static ElementsCollection searchResultsLineItems = $$(".x-catalog__content .x-gallery-tile__content span[itemprop='name']");
+    private static SelenideElement resultFoSearch = $(".x-title h1");
+    private static ElementsCollection pagesOfSearchResults = $$(".x-pager__content .x-pager__item");
+    private static ElementsCollection searchResultsLineItems = $$(".x-catalog__content .x-gallery-tile__content span[itemprop='name']");
 
     @Step
     public static void assertResultOfSearchPage(String searchValue) {

@@ -8,10 +8,10 @@ import static org.junit.Assert.assertEquals;
 
 public class RegistrationAndLoginPage {
 
-    public static SelenideElement registrationEmailField = $("#join-now-tabbed-first div input[type='email']");
-    public static SelenideElement registrationPasswordField = $("#join-now-tabbed-first div input[type='password']");
-    public static SelenideElement createSiteButton = $("#join-now-tabbed-first button");
-    public static SelenideElement infoMessage = $("#cabinet_flash_message+div div h2");
+    private static SelenideElement registrationEmailField = $("#join-now-tabbed-first div input[type='email']");
+    private static SelenideElement registrationPasswordField = $("#join-now-tabbed-first div input[type='password']");
+    private static SelenideElement createSiteButton = $("#join-now-tabbed-first button");
+    private static SelenideElement infoMessage = $("#cabinet_flash_message+div div h2");
 
 
     /**

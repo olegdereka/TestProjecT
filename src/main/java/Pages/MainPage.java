@@ -14,11 +14,11 @@ public class MainPage {
 
     public static SelenideElement siteLogo = $(".x-header__logo-img");
     public static SelenideElement fullVersionOfSiteButton = $("[data-bazooka='MobileSwitch']");
-    public static SelenideElement searchButton = $(".x-search__button-icon");
+    private static SelenideElement searchButton = $(".x-search__button-icon");
     public static SelenideElement searchField = $$("#search_form .x-search__inner input").find(Condition.visible);
-    public static SelenideElement registrationButton = $("[data-qaid='reg_element']");
-    public static SelenideElement buyerTypeButton = $("[data-qaid='reg_as_buyer_btn']");
-    public static SelenideElement companyTypeButton = $("[data-qaid='reg_as_company_btn']");
+    private static SelenideElement registrationButton = $("[data-qaid='reg_element']");
+    private static SelenideElement buyerTypeButton = $("[data-qaid='reg_as_buyer_btn']");
+    private static SelenideElement companyTypeButton = $("[data-qaid='reg_as_company_btn']");
     public static ElementsCollection autocompleteResults = $$(".x-autocomplete__group .x-autocomplete__item[data-qaid='suggest_item'] .x-autocomplete__text");
 
     public enum TypeOfRegistration {

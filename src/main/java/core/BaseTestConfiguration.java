@@ -24,7 +24,7 @@ public class BaseTestConfiguration {
     //Set configuration for run test:
     //platform1 - Chrome Web;
     //platform2 - Chrome mobile;
-    public static String platform = "platform1";
+    String platform = "platform1";
 
     private ChromeDriver driver;
 
