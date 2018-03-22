@@ -11,7 +11,7 @@ import static com.codeborne.selenide.Selenide.$$;
 import static junit.framework.TestCase.fail;
 
 public class MainPage {
-    public static SelenideElement siteLogoMobile = $(".b-header__logo");
+
     public static SelenideElement siteLogo = $(".x-header__logo-img");
     public static SelenideElement fullVersionOfSiteButton = $("[data-bazooka='MobileSwitch']");
     public static SelenideElement searchButton = $(".x-search__button-icon");

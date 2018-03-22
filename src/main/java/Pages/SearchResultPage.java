@@ -8,7 +8,6 @@ import ru.yandex.qatools.allure.annotations.Step;
 
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
-import static org.junit.Assert.assertEquals;
 
 public class SearchResultPage {
 

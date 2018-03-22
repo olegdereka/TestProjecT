@@ -1,11 +1,6 @@
 package core;
 
-import com.codeborne.selenide.Selenide;
-
 import java.math.BigInteger;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Random;
 
 public class Tools {
@@ -33,14 +28,5 @@ public class Tools {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * @return current time and date e.g "01-28-35(16.12.2015)"
-     */
-    public static String getCurrentDateAndTime() {
-        DateFormat dateFormat = new SimpleDateFormat("HH-mm-ss(dd.MM.yyyy)");
-        Date date = new Date();
-        return dateFormat.format(date);
     }
 }

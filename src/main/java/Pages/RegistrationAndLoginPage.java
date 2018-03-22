@@ -1,6 +1,5 @@
 package Pages;
 
-import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
 import ru.yandex.qatools.allure.annotations.Step;
 
@@ -8,6 +7,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static org.junit.Assert.assertEquals;
 
 public class RegistrationAndLoginPage {
+
     public static SelenideElement registrationEmailField = $("#join-now-tabbed-first div input[type='email']");
     public static SelenideElement registrationPasswordField = $("#join-now-tabbed-first div input[type='password']");
     public static SelenideElement createSiteButton = $("#join-now-tabbed-first button");
@@ -20,7 +20,7 @@ public class RegistrationAndLoginPage {
      * @param password - password of user;
      */
     @Step
-    public static void makeRegistration(String email, String password){
+    public static void makeRegistrationWeb(String email, String password){
         registrationEmailField.setValue(email);
         registrationPasswordField.setValue(password);
         createSiteButton.click();

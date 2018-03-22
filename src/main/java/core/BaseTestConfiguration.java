@@ -21,7 +21,7 @@ import static core.TestData.baseUrl;
 
 public class BaseTestConfiguration {
 
-    String platform = "platform2";
+    public static String platform = "platform2";
 
     private ChromeDriver driver;
 

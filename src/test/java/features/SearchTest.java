@@ -1,7 +1,6 @@
 package features;
 
 import core.BaseTestConfiguration;
-import org.junit.experimental.categories.Category;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.yandex.qatools.allure.annotations.Features;

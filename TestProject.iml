@@ -149,6 +149,16 @@
     <orderEntry type="library" name="Maven: oro:oro:2.0.8" level="project" />
     <orderEntry type="library" name="Maven: org.apache.maven:maven-jxr:2.5" level="project" />
     <orderEntry type="library" name="Maven: org.apache.maven.wagon:wagon-provider-api:1.0" level="project" />
+    <orderEntry type="library" name="Maven: io.qameta.allure:allure-junit4:2.0-BETA21" level="project" />
+    <orderEntry type="library" name="Maven: io.qameta.allure:allure-java-commons:2.0-BETA21" level="project" />
+    <orderEntry type="library" name="Maven: io.qameta.allure:allure2-model-api:1.0-BETA6" level="project" />
+    <orderEntry type="library" name="Maven: io.qameta.allure:allure2-model-pojo:1.0-BETA6" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.tika:tika-core:1.14" level="project" />
+    <orderEntry type="library" name="Maven: io.qameta.allure:allure2-model-jackson:1.0-BETA6" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.module:jackson-module-jaxb-annotations:2.7.0" level="project" />
+    <orderEntry type="library" name="Maven: org.jooq:joor:0.9.6" level="project" />
+    <orderEntry type="library" name="Maven: io.qameta.allure:allure-java-migration:2.0-BETA21" level="project" />
+    <orderEntry type="library" name="Maven: org.aspectj:aspectjrt:1.8.10" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven:maven-project:2.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.apache.maven:maven-settings:2.2.1" level="project" />
     <orderEntry type="library" scope="TEST" name="Maven: org.apache.maven:maven-profile:2.2.1" level="project" />
